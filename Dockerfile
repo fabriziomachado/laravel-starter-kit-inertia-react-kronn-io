@@ -6,9 +6,10 @@ FROM php:${PHP_VERSION}-fpm-alpine AS php-base
 ARG DB_DRIVERS="sqlite"
 ARG EXTRA_PECL=""
 ARG EXTRA_EXT=""
+ARG EXTRA_APK=""
 
 RUN set -eux; \
-    RUNTIME_PKGS="ca-certificates curl git icu-libs libzip libpng libjpeg-turbo freetype libwebp libexif"; \
+    RUNTIME_PKGS="ca-certificates curl git icu-libs libzip libpng libjpeg-turbo freetype libwebp libexif $EXTRA_APK"; \
     BUILD_PKGS="icu-dev libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev libwebp-dev linux-headers"; \
     PHP_EXTS="bcmath pcntl intl zip gd exif"; \
     for driver in $DB_DRIVERS; do \
@@ -23,6 +24,7 @@ RUN set -eux; \
     for ext in $EXTRA_PECL; do \
         case "$ext" in \
             redis) PECL_LIST="$PECL_LIST redis" ;; \
+            xdebug) PECL_LIST="$PECL_LIST xdebug" ;; \
             mongodb) BUILD_PKGS="$BUILD_PKGS openssl-dev"; PECL_LIST="$PECL_LIST mongodb" ;; \
             imagick) RUNTIME_PKGS="$RUNTIME_PKGS imagemagick"; BUILD_PKGS="$BUILD_PKGS imagemagick-dev"; PECL_LIST="$PECL_LIST imagick" ;; \
             memcached) RUNTIME_PKGS="$RUNTIME_PKGS libmemcached"; BUILD_PKGS="$BUILD_PKGS libmemcached-dev zlib-dev cyrus-sasl-dev"; PECL_LIST="$PECL_LIST memcached" ;; \

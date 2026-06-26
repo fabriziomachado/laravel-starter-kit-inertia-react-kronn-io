@@ -78,6 +78,22 @@ composer test
 
 You should see 100% test coverage and all quality checks passing.
 
+### Running Tests Locally With Docker
+
+When using the local `laravel-starter-dev` container, run the full suite with
+the same preparation used by CI: build frontend assets, temporarily disable the
+Vite hot file, disable Inertia SSR for the test process, and restore the hot file
+afterwards.
+
+```bash
+docker exec laravel-starter-dev bash -lc 'bun run build && rm -f public/hot && INERTIA_SSR_ENABLED=false php -d memory_limit=1G /usr/bin/composer test; status=$?; printf "http://localhost:5173" > public/hot; exit $status'
+```
+
+The local development image must include the test-only runtime dependencies used
+by the suite, such as Xdebug, the PHP sockets extension, Node.js, and a Chromium
+runtime for Pest browser tests. These dependencies are not required in the
+production image.
+
 ## Available Tooling
 
 ### Development

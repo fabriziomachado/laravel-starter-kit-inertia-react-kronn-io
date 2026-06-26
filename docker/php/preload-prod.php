@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * OPcache Preloading Script - Production
  *
@@ -33,7 +35,7 @@ $preloadPaths = [
 ];
 
 foreach ($preloadPaths as $path) {
-    if (!is_dir($path)) {
+    if (! is_dir($path)) {
         continue;
     }
 
