@@ -14,6 +14,15 @@ prepare_storage() {
         storage/logs \
         bootstrap/cache
 
+    if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
+        SQLITE_DATABASE="${DB_DATABASE:-database/database.sqlite}"
+
+        if [ "$SQLITE_DATABASE" != ":memory:" ]; then
+            mkdir -p "$(dirname "$SQLITE_DATABASE")"
+            touch "$SQLITE_DATABASE"
+        fi
+    fi
+
     chown -R www-data:www-data storage bootstrap/cache database
     chmod -R ug+rwX storage bootstrap/cache database
 }
