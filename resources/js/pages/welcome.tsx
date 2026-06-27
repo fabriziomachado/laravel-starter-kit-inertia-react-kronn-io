@@ -396,7 +396,8 @@ export default function Welcome({
                     </main>
                 </div>
                 <p className="mt-6 text-xs text-[#706f6c] dark:text-[#A1A09A]">
-                    Container ID: <span className="font-mono">{containerId}</span>
+                    Container ID:{' '}
+                    <span className="font-mono">{containerId}</span>
                 </p>
                 <div className="hidden h-14.5 lg:block"></div>
             </div>
