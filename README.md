@@ -89,6 +89,19 @@ afterwards.
 docker exec laravel-starter-dev bash -lc 'bun run build && rm -f public/hot && INERTIA_SSR_ENABLED=false php -d memory_limit=1G /usr/bin/composer test; status=$?; printf "http://localhost:5173" > public/hot; exit $status'
 ```
 
+If the `laravel-starter-dev` container does not exist, run the suite directly
+from the local test image:
+
+```bash
+docker run --rm \
+  -e XDEBUG_MODE=coverage \
+  -e INERTIA_SSR_ENABLED=false \
+  -v "$PWD":/app \
+  -w /app \
+  laravel-starter-php85-bun \
+  sh -lc 'bun run build && rm -f public/hot && php -d memory_limit=1G /usr/bin/composer test'
+```
+
 The local development image must include the test-only runtime dependencies used
 by the suite, such as Xdebug, the PHP sockets extension, Node.js, and a Chromium
 runtime for Pest browser tests. These dependencies are not required in the
